@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Persistent Notes Workspace</title>
+  <link rel="stylesheet" href="/CSS/index.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <span class="logo">✦</span>
+      <h1>Notes Workspace</h1>
+    </div>
+
+    <div class="actions">
+      <div class="search">
+        <input
+          type="search"
+          id="search"
+          class="search-input"
+          placeholder="Search notes by title, text, or tags…"
+          aria-label="Search notes"
+        />
+      </div>
+
+      <div class="filters">
+        <button class="chip active" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" data-filter="work">Work</button>
+        <button class="chip" data-filter="personal">Personal</button>
+        <button class="chip" data-filter="ideas">Ideas</button>
+        <button class="chip" data-filter="todo">To‑do</button>
+        
+      </div>
+
+      <button class="btn primary" id="new-note">New note</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Sidebar: notes list -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2 class="section-title">Notes</h2>
+        <div class="sort">
+          <label for="sort">Sort</label>
+          <select id="sort" class="select">
+            <option value="updated_desc">Recent</option>
+            <option value="updated_asc">Oldest</option>
+            <option value="title_asc">Title A–Z</option>
+            <option value="title_desc">Title Z–A</option>
+          </select>
+        </div>
+      </div>
+
+      <ul class="notes-list" id="notes-list">
+        <!-- Example items (static). Replace with dynamic entries if you add JS. -->
+        <li class="note-item active" data-tags="work, todo">
+          <button class="note-card">
+            <div class="note-meta">
+              <h3 class="note-title">Project roadmap</h3>
+              <time class="note-time" datetime="2025-11-19">Nov 19, 2025</time>
+            </div>
+            <p class="note-preview">Milestones, risks, and timelines for Q4 delivery…</p>
+            <div class="tag-row">
+              <span class="tag">work</span>
+              <span class="tag">todo</span>
+            </div>
+          </button>
+        </li>
+
+        <li class="note-item" data-tags="ideas">
+          <button class="note-card">
+            <div class="note-meta">
+              <h3 class="note-title">App name brainstorm</h3>
+              <time class="note-time" datetime="2025-11-15">Nov 15, 2025</time>
+            </div>
+            <p class="note-preview">Short, memorable names; consider Gujarati words…</p>
+            <div class="tag-row">
+              <span class="tag">ideas</span>
+            </div>
+          </button>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Editor: note details -->
+    <section class="editor">
+      <header class="editor-bar">
+        <input
+          type="text"
+          class="title-input"
+          id="title"
+          placeholder="Untitled note"
+          aria-label="Note title"
+        />
+
+        <div class="editor-actions">
+          <div class="tags-input">
+            <div class="tags-chips" id="tags">
+              <!-- Example selected tags -->
+              <button class="chip small" aria-pressed="true">work</button>
+              <button class="chip small" aria-pressed="false">todo</button>
+            </div>
+            <input
+              type="text"
+              class="add-tag-input"
+              id="add-tag"
+              placeholder="Add tag…"
+              aria-label="Add tag"
+            />
+          </div>
+
+          <div class="buttons">
+            <button class="btn" id="duplicate-note">Duplicate</button>
+            <button class="btn danger" id="delete-note">Delete</button>
+            <button class="btn primary" id="save-note">Save</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="editor-body">
+        <textarea
+          class="content-input"
+          id="content"
+          placeholder="Write your note here…"
+          spellcheck="true"
+        ></textarea>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p class="hint">
+      Notes are saved locally in your browser for persistence. Clear site data to reset.
+    </p>
+  </footer>
+</body>
+</html>
