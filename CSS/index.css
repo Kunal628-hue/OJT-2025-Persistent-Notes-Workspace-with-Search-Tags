@@ -340,6 +340,9 @@ body { margin: 0; }
   gap: 10px;
   align-items: center;
 }
+.hidden {
+  display: none !important;
+}
 
 /* Style for login/signup/export/import buttons */
 .auth-controls .btn {
@@ -364,6 +367,10 @@ body { margin: 0; }
   font-weight: 600;
   border: none;
 }
+.auth-controls .btn.tiny {
+  padding: 4px 10px;
+  font-size: 12px;
+}
 
 .auth-controls .btn.primary:hover {
   filter: brightness(1.05);
@@ -381,7 +388,22 @@ body { margin: 0; }
   border-color: var(--primary);
 }
 
-/* ===== File input (hidden) ===== */
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--surface-2) 90%, #0f1628 10%);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+}
+.user-name {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
 #importFile {
   display: none;
 }

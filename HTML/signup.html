@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
-  <link rel="stylesheet" href="/CSS/signup.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login or Create Account</title>
+  <link rel="stylesheet" href="../CSS/signup.css">
 </head>
 <body>
   <div class="container">
@@ -25,18 +26,169 @@
     </div>
     <!-- Login Form -->
     <div class="login-form">
-      <h2>Welcome Back</h2>
-      <form>
-        <label>Username</label>
-        <input type="text" placeholder="Enter your username">
-        <label>Password</label>
-        <input type="password" placeholder="Enter your password">
-        <button class="login-btn">Login</button>
-        <div class="form-footer">
-          <a class="forgot-link" href="#">Forgot Password?</a>
-        </div>
+      <h2>Welcome to Global Notes Workspace</h2>
+
+      <div class="form-switch" role="tablist">
+        <button class="switch-btn active" data-view="login" role="tab" aria-selected="true">
+          Login
+        </button>
+        <button class="switch-btn" data-view="signup" role="tab" aria-selected="false">
+          Create account
+        </button>
+      </div>
+
+      <p id="auth-message" class="auth-message" role="status" aria-live="polite"></p>
+
+      <form id="login-form" class="auth-form" data-view="login">
+        <label for="username">Username</label>
+        <input id="username" type="text" placeholder="Enter your username" required>
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Enter your password" required>
+        <button class="login-btn" type="submit">Login</button>
       </form>
+
+      <form id="signup-form" class="auth-form hidden" data-view="signup">
+        <label for="new-username">Choose a username</label>
+        <input id="new-username" type="text" placeholder="e.g. johndoe" minlength="3" required>
+        <label for="email">Email (optional)</label>
+        <input id="email" type="email" placeholder="you@example.com">
+        <label for="new-password">Password</label>
+        <input id="new-password" type="password" placeholder="Create a password" minlength="6" required>
+        <label for="confirm-password">Confirm password</label>
+        <input id="confirm-password" type="password" placeholder="Re-enter password" minlength="6" required>
+        <button class="login-btn" type="submit">Create account</button>
+      </form>
+
+      <div class="form-footer">
+        <a class="forgot-link" href="./index.html">Skip to notes</a>
+      </div>
     </div>
   </div>
+
+  <script>
+    (function () {
+      const ACCOUNT_KEY = "notesWorkspace.accounts.v1";
+      const ACTIVE_USER_KEY = "notesWorkspace.activeUser";
+      const NOTES_PREFIX = "notesWorkspace.notes";
+
+      const loginForm = document.getElementById("login-form");
+      const signupForm = document.getElementById("signup-form");
+      const switchButtons = document.querySelectorAll(".switch-btn");
+      const messageEl = document.getElementById("auth-message");
+
+      function storageKeyForUser(user) {
+        return `${NOTES_PREFIX}.${user || "guest"}`;
+      }
+
+      function migrateGuestNotesIfEmpty(username) {
+        if (!username) return;
+        const guestData = localStorage.getItem(storageKeyForUser(null));
+        if (!guestData) return;
+        const userKey = storageKeyForUser(username);
+        try {
+          const existing = JSON.parse(localStorage.getItem(userKey) || "[]");
+          if (Array.isArray(existing) && existing.length) {
+            return; // user already has notes
+          }
+        } catch {
+          // fall through and overwrite
+        }
+        localStorage.setItem(userKey, guestData);
+      }
+
+      function loadAccounts() {
+        try {
+          const raw = localStorage.getItem(ACCOUNT_KEY);
+          return raw ? JSON.parse(raw) : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function saveAccounts(list) {
+        localStorage.setItem(ACCOUNT_KEY, JSON.stringify(list));
+      }
+
+      function setMessage(text, type = "info") {
+        if (!messageEl) return;
+        messageEl.textContent = text;
+        messageEl.className = `auth-message ${type}`;
+      }
+
+      function toggleView(view) {
+        document.querySelectorAll(".auth-form").forEach((form) => {
+          const isTarget = form.dataset.view === view;
+          form.classList.toggle("hidden", !isTarget);
+        });
+        switchButtons.forEach((btn) => {
+          const isTarget = btn.dataset.view === view;
+          btn.classList.toggle("active", isTarget);
+          btn.setAttribute("aria-selected", String(isTarget));
+        });
+        setMessage("");
+      }
+
+      switchButtons.forEach((btn) => {
+        btn.addEventListener("click", () => toggleView(btn.dataset.view));
+      });
+
+      loginForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value;
+        const accounts = loadAccounts();
+        const account = accounts.find(
+          (a) => a.username.toLowerCase() === username.toLowerCase()
+        );
+        if (!account) {
+          setMessage("Account not found. Create one below.", "error");
+          toggleView("signup");
+          return;
+        }
+        if (account.password !== password) {
+          setMessage("Incorrect password. Try again.", "error");
+          return;
+        }
+        migrateGuestNotesIfEmpty(account.username);
+        localStorage.setItem(ACTIVE_USER_KEY, account.username);
+        setMessage("Success! Redirecting…", "success");
+        setTimeout(() => {
+          window.location.href = "./index.html";
+        }, 400);
+      });
+
+      signupForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const username = document.getElementById("new-username").value.trim();
+        const password = document.getElementById("new-password").value;
+        const confirm = document.getElementById("confirm-password").value;
+        const email = document.getElementById("email").value.trim();
+
+        if (password.length < 6) {
+          setMessage("Password must be at least 6 characters.", "error");
+          return;
+        }
+        if (password !== confirm) {
+          setMessage("Passwords do not match.", "error");
+          return;
+        }
+        const accounts = loadAccounts();
+        const exists = accounts.some(
+          (a) => a.username.toLowerCase() === username.toLowerCase()
+        );
+        if (exists) {
+          setMessage("That username is already taken.", "error");
+          return;
+        }
+        accounts.push({ username, password, email });
+        saveAccounts(accounts);
+        migrateGuestNotesIfEmpty(username);
+        setMessage("Account created! You can log in now.", "success");
+        signupForm.reset();
+        toggleView("login");
+        document.getElementById("username").value = username;
+      });
+    })();
+  </script>
 </body>
 </html>

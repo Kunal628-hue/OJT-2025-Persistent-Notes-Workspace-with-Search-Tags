@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Persistent Notes Workspace</title>
-  <link rel="stylesheet" href="/CSS/index.css" />
+  <link rel="stylesheet" href="../CSS/index.css" />
 </head>
 <body>
   <header class="app-header">
     <div class="brand">
-      <span class="logo">✦</span>
-      <h1>Notes Workspace</h1>
+      <span class="logo">🌎</span>
+      <h1>Global Notes Workspace</h1>
     </div>
 
     <div class="actions">
@@ -37,10 +37,15 @@
 
     <!-- New controls -->
     <div class="auth-controls">
-      <button class="btn" id="login">Login</button>
-      <button class="btn" id="signup">Sign Up</button>
-      <button class="btn" id="export">Export</button>
+      <div class="user-pill hidden" id="user-pill" aria-live="polite">
+        <span class="user-name" id="user-name"></span>
+        <button class="btn tiny" id="logout">Log out</button>
+      </div>
+      <button class="btn ghost" id="login">Login</button>
+      <button class="btn ghost" id="signup">Sign Up</button>
+      <button class="btn primary" id="export">Export</button>
       <button class="btn" id="import">Import</button>
+      <input type="file" id="importFile" accept="application/json" />
     </div>
   </header>
 
@@ -140,5 +145,7 @@
       Notes are saved locally in your browser for persistence. Clear site data to reset.
     </p>
   </footer>
+
+  <script src="../main.js"></script>
 </body>
 </html>
