@@ -167,6 +167,21 @@ body { margin: 0; }
   padding: 14px 14px 10px;
   border-bottom: 1px dashed var(--border);
 }
+.export {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: 150ms ease;
+}
+.export:hover { border-color: color-mix(in oklab, var(--border) 60%, var(--text) 40%); }
+.export.active {
+  background: color-mix(in oklab, var(--primary) 30%, var(--surface-2));
+  color: var(--text);
+  border-color: var(--primary);
+}
 .section-title {
   margin: 0;
   font-size: 14px;
@@ -318,4 +333,55 @@ body { margin: 0; }
   .app-header { grid-template-columns: 1fr; grid-auto-rows: auto; }
   .actions { flex-wrap: wrap; }
   .filters { display: none; } /* hide preset filters on small screens */
+}
+/* ===== Auth & utility controls ===== */
+.auth-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Style for login/signup/export/import buttons */
+.auth-controls .btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 14px;
+  transition: 160ms ease;
+}
+
+.auth-controls .btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Differentiate primary actions (export/import) */
+.auth-controls .btn.primary {
+  background: linear-gradient(180deg, var(--primary), var(--primary-strong));
+  color: #07101f;
+  font-weight: 600;
+  border: none;
+}
+
+.auth-controls .btn.primary:hover {
+  filter: brightness(1.05);
+}
+
+/* Optional ghost style for login/signup */
+.auth-controls .btn.ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+
+.auth-controls .btn.ghost:hover {
+  color: var(--text);
+  border-color: var(--primary);
+}
+
+/* ===== File input (hidden) ===== */
+#importFile {
+  display: none;
 }

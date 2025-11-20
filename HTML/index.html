@@ -30,10 +30,17 @@
         <button class="chip" data-filter="personal">Personal</button>
         <button class="chip" data-filter="ideas">Ideas</button>
         <button class="chip" data-filter="todo">To‑do</button>
-        
       </div>
 
       <button class="btn primary" id="new-note">New note</button>
+    </div>
+
+    <!-- New controls -->
+    <div class="auth-controls">
+      <button class="btn" id="login">Login</button>
+      <button class="btn" id="signup">Sign Up</button>
+      <button class="btn" id="export">Export</button>
+      <button class="btn" id="import">Import</button>
     </div>
   </header>
 
@@ -54,7 +61,6 @@
       </div>
 
       <ul class="notes-list" id="notes-list">
-        <!-- Example items (static). Replace with dynamic entries if you add JS. -->
         <li class="note-item active" data-tags="work, todo">
           <button class="note-card">
             <div class="note-meta">
@@ -98,7 +104,6 @@
         <div class="editor-actions">
           <div class="tags-input">
             <div class="tags-chips" id="tags">
-              <!-- Example selected tags -->
               <button class="chip small" aria-pressed="true">work</button>
               <button class="chip small" aria-pressed="false">todo</button>
             </div>
