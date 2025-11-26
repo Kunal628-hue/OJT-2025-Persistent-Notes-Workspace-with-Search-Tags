@@ -70,10 +70,11 @@ body { margin: 0; }
   align-items: center;
   gap: 12px;
   justify-self: stretch;
+  flex-wrap: wrap;
 }
 
 .search {
-  flex: 1;
+  flex: 1 1 100%;
 }
 .search-input {
   width: 100%;
@@ -90,6 +91,29 @@ body { margin: 0; }
   gap: 8px;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.date-filter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.date-filter-label {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.date-filter-input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.date-filter-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
 }
 
 /* ===== Chips & tags ===== */
@@ -329,6 +353,39 @@ body { margin: 0; }
   overflow-y: auto;
 }
 
+.note-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.note-table th,
+.note-table td {
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.note-table th {
+  background: var(--surface);
+  font-weight: 600;
+}
+
+.note-table-compact th,
+.note-table-compact td {
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+.note-table-wide {
+  width: 100%;
+}
+
+.note-table-striped tbody tr:nth-child(even) {
+  background: var(--surface-2);
+}
+
 /* ===== Footer ===== */
 .app-footer {
   padding: 12px 20px 24px;
@@ -421,6 +478,38 @@ body { margin: 0; }
   color: var(--text-dim);
 }
 
-#importFile {
+#importFile,
+#image-upload-input,
+#table-upload-input {
   display: none;
+}
+
+.note-image {
+  margin: 8px 0;
+  text-align: center;
+}
+
+.note-image img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.note-image-size-small img {
+  max-width: 40%;
+}
+
+.note-image-size-medium img {
+  max-width: 70%;
+}
+
+.note-image-size-large img {
+  max-width: 100%;
+}
+
+.note-image-caption {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--text-dim);
+  outline: none;
 }
