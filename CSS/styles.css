@@ -1,0 +1,36 @@
+/* Dark Mode (Default) */
+[data-theme="dark"] #content {
+  color: #ffffff !important;
+  background-color: #1a1a2e !important;
+}
+
+[data-theme="dark"] #content::placeholder {
+  color: #888888 !important;
+}
+
+[data-theme="dark"] #content * {
+  color: #ffffff !important;
+}
+
+/* Light Mode */
+[data-theme="light"] #content {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+[data-theme="light"] #content::placeholder {
+  color: #cccccc !important;
+}
+
+[data-theme="light"] #content * {
+  color: #000000 !important;
+}
+
+/* Ensure text in other elements also adapts */
+[data-theme="dark"] {
+  color: #e0e0e0;
+}
+
+[data-theme="light"] {
+  color: #2c2c2c;
+}
