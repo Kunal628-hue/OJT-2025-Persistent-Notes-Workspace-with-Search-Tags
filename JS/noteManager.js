@@ -7,8 +7,17 @@ export function createNote(partial = {}) {
     title: partial.title || "",
     content: partial.content || "",
     tags: Array.isArray(partial.tags) ? partial.tags : [],
+    folderId: partial.folderId || null, // Add folder association
     createdAt: partial.createdAt || now,
     updatedAt: partial.updatedAt || now,
+  };
+}
+
+export function createFolder(name) {
+  return {
+    id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+    name: name || "New Folder",
+    createdAt: new Date().toISOString(),
   };
 }
 
