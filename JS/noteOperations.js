@@ -60,9 +60,9 @@ export function handleNewNote(notes, activeUser, getActiveFilter, getSelectedDat
   const selectedDate = getSelectedDate();
   const nowIso = new Date().toISOString();
   const createdIso = selectedDate ? `${selectedDate}T00:00:00.000Z` : nowIso;
-  const newNote = createNote({ 
-    tags: initialTags, 
-    createdAt: createdIso, 
+  const newNote = createNote({
+    tags: initialTags,
+    createdAt: createdIso,
     updatedAt: createdIso,
     folderId: activeFolderId // Assign to current folder
   });
