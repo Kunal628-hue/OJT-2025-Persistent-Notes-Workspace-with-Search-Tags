@@ -5,16 +5,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Global Notes Workspace</title>
-  <link rel="stylesheet" href="CSS/index.css" />
+  <link rel="stylesheet" href="CSS/index.css?v=3" />
 </head>
 
 <body>
   <header class="app-header">
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+    <div class="header-row">
       <div class="brand">
         <button class="btn-icon" id="sidebar-toggle" aria-label="Toggle sidebar" style="margin-right: 8px;">☰</button>
         <span class="logo">🌎</span>
         <h1>Global Notes Workspace</h1>
+      </div>
+
+      <div class="search">
+        <input type="search" id="search" class="search-input" placeholder="Search notes by title, text, or tags…"
+          aria-label="Search notes" />
       </div>
 
       <div class="auth-controls">
@@ -30,12 +35,7 @@
       </div>
     </div>
 
-    <div class="actions">
-      <div class="search">
-        <input type="search" id="search" class="search-input" placeholder="Search notes by title, text, or tags…"
-          aria-label="Search notes" />
-      </div>
-
+    <div class="header-toolbar">
       <div class="filters">
         <button class="chip active" data-filter="all" aria-pressed="true">All</button>
         <button class="chip" data-filter="work">Work</button>
@@ -69,13 +69,12 @@
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-left: auto;">
+      <div class="header-tools">
         <button class="btn tiny ghost" id="edit-undo" type="button" aria-label="Undo"><span
             aria-hidden="true">↺</span></button>
         <button class="btn tiny ghost" id="edit-redo" type="button" aria-label="Redo"><span
             aria-hidden="true">↻</span></button>
-        <button class="btn tiny ghost" id="print-note" type="button" aria-label="Print note"><span
-            aria-hidden="true">🖨</span></button>
+
         <select id="theme-selector" class="select tiny" aria-label="UI Theme">
           <option value="amoled-dark">AMOLED Dark</option>
           <option value="professional-light">Professional Light</option>
@@ -88,66 +87,89 @@
   </header>
 
   <main class="layout">
-    <!-- Sidebar: notes list -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <h2 class="section-title">Notes</h2>
-        <div class="sort">
-          <label for="sort">Sort</label>
-          <select id="sort" class="select">
-            <option value="updated_desc">Recent</option>
-            <option value="updated_asc">Oldest</option>
-            <option value="title_asc">Title A–Z</option>
-            <option value="title_desc">Title Z–A</option>
-          </select>
+    <!-- Sidebar Column -->
+    <aside class="sidebar-column">
+      <!-- Main Notes Drawer -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h2 class="section-title">Notes</h2>
+          <div class="sort">
+            <label for="sort">Sort</label>
+            <select id="sort" class="select">
+              <option value="updated_desc">Recent</option>
+              <option value="updated_asc">Oldest</option>
+              <option value="title_asc">Title A–Z</option>
+              <option value="title_desc">Title Z–A</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Folders Section -->
+        <div class="folders-section">
+          <div class="folders-header">
+            <h3>📁 Folders</h3>
+            <button id="create-folder" class="btn-icon" title="Create new folder">+</button>
+          </div>
+          <ul id="folders-list" class="folders-list">
+            <!-- Folders will be rendered here -->
+          </ul>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="notes-section">
+          <div class="notes-header">
+            <h3>📝 Notes</h3>
+          </div>
+
+          <ul class="notes-list" id="notes-list">
+            <li class="note-item active" data-tags="work, todo">
+              <button class="note-card">
+                <div class="note-meta">
+                  <h3 class="note-title">Project roadmap</h3>
+                  <time class="note-time" datetime="2025-11-19">Nov 19, 2025</time>
+                </div>
+                <p class="note-preview">Milestones, risks, and timelines for Q4 delivery…</p>
+                <div class="tag-row">
+                  <span class="tag">work</span>
+                  <span class="tag">todo</span>
+                </div>
+              </button>
+            </li>
+
+            <li class="note-item" data-tags="ideas">
+              <button class="note-card">
+                <div class="note-meta">
+                  <h3 class="note-title">App name brainstorm</h3>
+                  <time class="note-time" datetime="2025-11-15">Nov 15, 2025</time>
+                </div>
+                <p class="note-preview">Short, memorable names; consider Gujarati words…</p>
+                <div class="tag-row">
+                  <span class="tag">ideas</span>
+                </div>
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
 
-      <!-- Folders Section -->
-      <div class="folders-section">
-        <div class="folders-header">
-          <h3>📁 Folders</h3>
-          <button id="create-folder" class="btn-icon" title="Create new folder">+</button>
+      <!-- AI Assistant Widget (Separate Box) -->
+      <div class="ai-sidebar-widget">
+        <div class="ai-widget-header">
+          <h3>✨ AI Assistant</h3>
         </div>
-        <ul id="folders-list" class="folders-list">
-          <!-- Folders will be rendered here -->
-        </ul>
-      </div>
-
-      <!-- Notes Section -->
-      <div class="notes-section">
-        <div class="notes-header">
-          <h3>📝 Notes</h3>
+        <div class="ai-input-wrapper">
+          <textarea id="ai-sidebar-prompt" class="ai-widget-input" placeholder="Ask AI to write..."></textarea>
+          <button id="ai-mic-btn" class="ai-mic-btn" title="Speak to write">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+          </button>
         </div>
-
-        <ul class="notes-list" id="notes-list">
-          <li class="note-item active" data-tags="work, todo">
-            <button class="note-card">
-              <div class="note-meta">
-                <h3 class="note-title">Project roadmap</h3>
-                <time class="note-time" datetime="2025-11-19">Nov 19, 2025</time>
-              </div>
-              <p class="note-preview">Milestones, risks, and timelines for Q4 delivery…</p>
-              <div class="tag-row">
-                <span class="tag">work</span>
-                <span class="tag">todo</span>
-              </div>
-            </button>
-          </li>
-
-          <li class="note-item" data-tags="ideas">
-            <button class="note-card">
-              <div class="note-meta">
-                <h3 class="note-title">App name brainstorm</h3>
-                <time class="note-time" datetime="2025-11-15">Nov 15, 2025</time>
-              </div>
-              <p class="note-preview">Short, memorable names; consider Gujarati words…</p>
-              <div class="tag-row">
-                <span class="tag">ideas</span>
-              </div>
-            </button>
-          </li>
-        </ul>
+        <button id="ai-sidebar-generate" class="btn primary full-width">Generate</button>
       </div>
     </aside>
 
@@ -177,59 +199,77 @@
       <div class="editor-body">
         <div class="editor-toolbar" aria-label="Text formatting controls">
           <div class="toolbar-controls">
-            <label for="text-size" class="text-size-label">Size:</label>
-            <select id="text-size" class="select tiny" aria-label="Text size">
-              <option value="12">12 px</option>
-              <option value="13">13 px</option>
-              <option value="14">14 px</option>
-              <option value="15" selected>15 px</option>
-              <option value="16">16 px</option>
-              <option value="17">17 px</option>
-              <option value="18">18 px</option>
-              <option value="19">19 px</option>
-              <option value="20">20 px</option>
-              <option value="21">21 px</option>
-              <option value="22">22 px</option>
-              <option value="23">23 px</option>
-              <option value="24">24 px</option>
-            </select>
-            <label for="text-color" class="text-size-label">Color:</label>
-            <select id="text-color" class="select tiny" aria-label="Text color">
-              <option value="" selected>Default</option>
-              <!-- light / accent colors -->
-              <option value="#ff6b6b">Red</option>
-              <option value="#4ecdc4">Teal</option>
-              <option value="#45b7d1">Blue</option>
-              <option value="#96ceb4">Green</option>
-              <option value="#ffeaa7">Yellow</option>
-              <option value="#dda0dd">Purple</option>
-              <!-- darker colors -->
-              <option value="#000000">Black</option>
-              <option value="#2d3436">Dark gray</option>
-              <option value="#2c3e50">Navy</option>
-              <option value="#1e272e">Charcoal</option>
-              <option value="#8e44ad">Dark purple</option>
-              <option value="#c0392b">Dark red</option>
-              <option value="#145a32">Dark green</option>
-            </select>
-            <label for="note-theme" class="text-size-label">Card:</label>
-            <select id="note-theme" class="select tiny" aria-label="Note card theme">
-              <option value="classic-blue">Classic Blue</option>
-              <option value="elegant-purple">Elegant Purple</option>
-              <option value="forest-green">Forest Green</option>
-              <option value="sunset-orange">Sunset Orange</option>
-              <option value="ocean-teal">Ocean Teal</option>
-              <option value="rose-gold">Rose Gold</option>
-              <option value="slate-gray">Slate Gray</option>
-              <option value="crimson-red">Crimson Red</option>
-            </select>
-            <label for="editor-pattern" class="text-size-label">Background:</label>
-            <select id="editor-pattern" class="select tiny" aria-label="Editor background pattern">
-              <option value="plain">Plain</option>
-              <option value="lined">Lined</option>
-              <option value="grid">Grid</option>
-              <option value="dotted">Dotted</option>
-            </select>
+            <div class="toolbar-group">
+              <label for="text-size" class="text-size-label">Size:</label>
+              <select id="text-size" class="select tiny" aria-label="Text size">
+                <option value="12">12 px</option>
+                <option value="13">13 px</option>
+                <option value="14">14 px</option>
+                <option value="15" selected>15 px</option>
+                <option value="16">16 px</option>
+                <option value="17">17 px</option>
+                <option value="18">18 px</option>
+                <option value="19">19 px</option>
+                <option value="20">20 px</option>
+                <option value="21">21 px</option>
+                <option value="22">22 px</option>
+                <option value="23">23 px</option>
+                <option value="24">24 px</option>
+              </select>
+            </div>
+
+            <div class="toolbar-group">
+              <label for="text-color" class="text-size-label">Color:</label>
+              <select id="text-color" class="select tiny" aria-label="Text color">
+                <option value="" selected>Default</option>
+                <!-- light / accent colors -->
+                <option value="#ff6b6b">Red</option>
+                <option value="#4ecdc4">Teal</option>
+                <option value="#45b7d1">Blue</option>
+                <option value="#96ceb4">Green</option>
+                <option value="#ffeaa7">Yellow</option>
+                <option value="#dda0dd">Purple</option>
+                <!-- darker colors -->
+                <option value="#000000">Black</option>
+                <option value="#2d3436">Dark gray</option>
+                <option value="#2c3e50">Navy</option>
+                <option value="#1e272e">Charcoal</option>
+                <option value="#8e44ad">Dark purple</option>
+                <option value="#c0392b">Dark red</option>
+                <option value="#145a32">Dark green</option>
+              </select>
+            </div>
+
+            <div class="toolbar-group">
+              <label for="note-theme" class="text-size-label">Card:</label>
+              <select id="note-theme" class="select tiny" aria-label="Note card theme">
+                <option value="classic-blue">Classic Blue</option>
+                <option value="elegant-purple">Elegant Purple</option>
+                <option value="forest-green">Forest Green</option>
+                <option value="sunset-orange">Sunset Orange</option>
+                <option value="ocean-teal">Ocean Teal</option>
+                <option value="rose-gold">Rose Gold</option>
+                <option value="slate-gray">Slate Gray</option>
+                <option value="crimson-red">Crimson Red</option>
+              </select>
+            </div>
+
+            <div class="toolbar-group">
+              <button id="ai-summarize-btn" class="btn tiny primary" title="Summarize Note">
+                ✨ Summarize
+              </button>
+            </div>
+
+            <div class="toolbar-group">
+              <label for="editor-pattern" class="text-size-label">Background:</label>
+              <select id="editor-pattern" class="select tiny" aria-label="Editor background pattern">
+                <option value="plain">Plain</option>
+                <option value="lined">Lined</option>
+                <option value="grid">Grid</option>
+                <option value="dotted">Dotted</option>
+              </select>
+            </div>
+
             <select id="format-action" class="select tiny" aria-label="Text formatting">
               <option value="">Format</option>
               <option value="bold">Bold</option>
@@ -256,9 +296,9 @@
           </div>
           <button class="btn-icon tiny" id="toolbar-toggle" aria-label="Toggle toolbar">▲</button>
         </div>
-        <div class="content-input" id="content" contenteditable="true" spellcheck="true"
-          aria-label="Note content editor"></div>
-      </div>
+        <div id="content" class="editor-content" contenteditable="true" aria-label="Note content">
+          <!-- Text will go here -->
+        </div>
       </div>
     </section>
   </main>
@@ -306,6 +346,8 @@
       </div>
     </div>
   </dialog>
+
+
 
   <script type="module" src="JS/notesApp.js"></script>
 </body>

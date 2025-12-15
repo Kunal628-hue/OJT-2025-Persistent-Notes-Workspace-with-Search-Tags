@@ -101,50 +101,7 @@ export function wireFormattingToolbar() {
   }
 
 
-  // Print current note (only the note content)
-  $("#print-note")?.addEventListener("click", () => {
-    const titleInput = document.querySelector("#title");
-    const contentElRef = document.querySelector("#content");
-    const title = titleInput && "value" in titleInput ? titleInput.value : "Untitled note";
-    const contentHtml = contentElRef ? contentElRef.innerHTML : "";
 
-    // Basic HTML escaping for title
-    const safeTitle = String(title).replace(/[&<>]/g, (ch) => {
-      switch (ch) {
-        case "&": return "&amp;";
-        case "<": return "&lt;";
-        case ">": return "&gt;";
-        default: return ch;
-      }
-    });
-
-    const printWindow = window.open("", "_blank", "width=800,height=600");
-    if (!printWindow) return;
-
-    printWindow.document.open();
-    printWindow.document.write(`<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>${safeTitle}</title>
-  <style>
-    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 32px; line-height: 1.6; }
-    h1 { font-size: 24px; margin-bottom: 16px; }
-    .content { font-size: 15px; }
-  </style>
-</head>
-<body>
-  <h1>${safeTitle}</h1>
-  <div class="content">${contentHtml}</div>
-</body>
-</html>`);
-    printWindow.document.close();
-
-    // Give the new window a moment to render, then print
-    printWindow.focus();
-    printWindow.print();
-    printWindow.close();
-  });
 
   // Text size control with proper event handling
   const textSizeSelect = $("#text-size");

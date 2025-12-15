@@ -152,18 +152,63 @@ body {
   z-index: 20;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-lg);
   padding: var(--spacing-lg) var(--spacing-xl);
-  backdrop-filter: blur(14px) saturate(170%);
-  background: linear-gradient(120deg, color-mix(in srgb, var(--primary) 25%, var(--surface-2)) 0%, color-mix(in srgb, var(--surface) 80%, transparent) 55%, color-mix(in srgb, var(--accent) 15%, var(--surface-2)) 100%);
-  border-bottom: 1px solid color-mix(in srgb, var(--primary) 30%, var(--border));
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: linear-gradient(180deg,
+      color-mix(in srgb, var(--surface) 85%, transparent) 0%,
+      color-mix(in srgb, var(--surface) 95%, transparent) 100%);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: nowrap;
+  /* Prevent wrapping for improved layout stability */
+}
+
+/* Header Sections */
 .brand {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
+}
+
+.auth-controls {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.search {
+  flex: 1 1 auto;
+  max-width: 600px;
+  min-width: 240px;
+  margin: 0 auto;
+  /* Center in available space */
+}
+
+.header-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-left: auto;
 }
 
 .logo {
@@ -187,34 +232,28 @@ body {
   color: var(--text);
 }
 
-.actions {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  flex-wrap: wrap;
-}
-
-.search {
-  flex: 1 1 300px;
-  min-width: 200px;
-}
+/* Removed .actions and .search flex: 1 1 300px styling as it is now in .header-row */
 
 .search-input {
   width: 100%;
-  padding: 10px var(--spacing-md);
+  padding: 10px var(--spacing-md) 10px 36px;
+  /* Added padding for icon */
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
   background: var(--surface-2);
   color: var(--text);
   font-size: 14px;
-  transition: all 150ms ease;
+  transition: all 200ms ease;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 12px center;
 }
 
 .search-input:focus {
   border-color: var(--primary);
   background: var(--surface);
   outline: none;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 10%, transparent);
 }
 
 .search-input::placeholder {
@@ -232,10 +271,18 @@ body {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: 8px var(--spacing-md);
   background: var(--surface-2);
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
+  /* Cleaner default */
   border-radius: var(--radius);
+  transition: all 200ms ease;
+}
+
+.date-filter:focus-within {
+  background: var(--surface);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 10%, transparent);
 }
 
 .date-filter-label {
@@ -399,34 +446,36 @@ body {
 
 /* ===== Chips & tags ===== */
 .chip {
-  padding: 7px 14px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 99px;
+  border: 1px solid transparent;
   background: var(--surface-2);
   color: var(--text-dim);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 150ms ease;
+  transition: all 200ms ease;
   white-space: nowrap;
 }
 
 .chip:hover {
   color: var(--text);
-  border-color: var(--border-light);
   background: var(--surface-3);
+  transform: translateY(-1px);
 }
 
 .chip.active {
-  background: color-mix(in srgb, var(--primary) 20%, var(--surface));
-  color: var(--primary-light);
-  border-color: var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+  border-color: transparent;
   font-weight: 600;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 30%, transparent);
 }
 
 .chip.small {
-  padding: 5px 10px;
+  padding: 4px 10px;
   font-size: 12px;
+  border-radius: 6px;
 }
 
 .chip.tag-chip {
@@ -541,16 +590,52 @@ body {
 }
 
 /* ===== Sidebar ===== */
+.sidebar-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  /* Larger gap between the two main boxes */
+  height: calc(100vh - 85px);
+  /* Increased height to make drawer longer */
+}
+
 .sidebar {
   border: 1px solid color-mix(in srgb, var(--primary) 20%, var(--border));
   background: linear-gradient(145deg, color-mix(in srgb, var(--surface) 92%, transparent) 0%, color-mix(in srgb, var(--primary) 9%, var(--surface-2)) 60%, color-mix(in srgb, var(--accent) 6%, var(--surface)) 100%);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow);
-  height: fit-content;
-  max-height: calc(100vh - 180px);
   display: flex;
   flex-direction: column;
+  flex: 1;
+  /* Take all available space, pushing AI widget down */
+  min-height: 0;
+}
+
+.notes-section {
+  flex: 1;
+  /* Take remaining space */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Contain list scrolling */
+  min-height: 0;
+  /* Flexbox scrolling fix */
+}
+
+.notes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg) 4px;
+}
+
+.notes-list {
+  list-style: none;
+  padding: 0 var(--spacing-sm);
+  overflow-y: auto;
+  /* Scrollable list */
+  flex: 1;
 }
 
 .sidebar-header {
@@ -584,29 +669,44 @@ body {
 }
 
 .select {
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--surface);
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  background: var(--surface-2);
   color: var(--text);
   font-size: 13px;
   cursor: pointer;
-  transition: all 150ms ease;
+  transition: all 200ms ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 32px;
 }
 
 .select:hover {
-  border-color: var(--border-light);
+  background-color: var(--surface-3);
 }
 
 .select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 10%, transparent);
+  background-color: var(--surface);
 }
 
 .select.tiny {
-  padding: 5px 8px;
+  padding: 4px 8px;
   font-size: 12px;
+  /* Ensure tiny selects have enough padding for arrow */
+  padding-right: 24px;
+}
+
+/* Specific fix for header theme selector to prevent truncation */
+#theme-selector {
+  min-width: 140px;
+  /* Give it enough breathing room */
+  text-overflow: ellipsis;
 }
 
 /* ===== Folders ===== */
@@ -1156,14 +1256,24 @@ body[data-theme="corporate-gray"] .note-card[data-theme="minimal-white"] {
 .toolbar-controls {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 16px;
   flex-wrap: nowrap;
   overflow-x: auto;
   flex: 1;
-  /* Hide scrollbar but keep functionality -> REMOVED to show scroller */
-  /* scrollbar-width: none; */
   padding-bottom: 8px;
-  /* Add gap between buttons and scrollbar */
+}
+
+/* Ensure ALL direct children (groups AND standalone selects) don't shrink */
+.toolbar-controls>* {
+  flex-shrink: 0;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* 
@@ -1343,10 +1453,124 @@ body[data-theme="corporate-gray"] .note-card[data-theme="minimal-white"] {
 
 /* ===== Footer ===== */
 .app-footer {
-  padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
-  color: var(--text-muted);
-  font-size: 12px;
   text-align: center;
+  padding: var(--spacing-lg);
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: auto;
+}
+
+/* AI Button Special Style - Keeping class for reference if needed, but button removed from toolbar */
+.ai-btn {
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  color: white;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
+  flex-shrink: 0;
+}
+
+/* AI Sidebar Widget - Standalone Box */
+.ai-sidebar-widget {
+  padding: var(--spacing-lg);
+  /* Increased padding for cleaner look */
+  padding-bottom: 24px;
+  /* Extra bottom padding to prevent button crowding */
+  border: 1px solid color-mix(in srgb, var(--primary) 20%, var(--border));
+  border-radius: var(--radius-lg);
+  /* Match sidebar background exactly for consistency */
+  background: linear-gradient(145deg, color-mix(in srgb, var(--surface) 92%, transparent) 0%, color-mix(in srgb, var(--primary) 9%, var(--surface-2)) 60%, color-mix(in srgb, var(--accent) 6%, var(--surface)) 100%);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  flex-shrink: 0;
+  /* Don't shrink */
+}
+
+
+
+.ai-widget-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.ai-input-wrapper {
+  position: relative;
+  display: flex;
+}
+
+.ai-widget-input {
+  width: 100%;
+  height: 80px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  resize: none;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color 150ms ease;
+}
+
+.ai-widget-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+}
+
+.ai-mic-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.ai-mic-btn:hover {
+  background: var(--surface-3);
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
+.ai-mic-btn.listening {
+  background: #fee2e2;
+  color: #ef4444;
+  border-color: #fca5a5;
+  animation: pulse-red 1.5s infinite;
+}
+
+@keyframes pulse-red {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.full-width {
+  width: 100%;
 }
 
 .hint {
@@ -1457,6 +1681,7 @@ body[data-theme="corporate-gray"] .note-card[data-theme="minimal-white"] {
     font-size: 16px;
   }
 }
+
 /* ===== Profile & Modal ===== */
 .header-avatar {
   width: 24px;
@@ -1464,7 +1689,8 @@ body[data-theme="corporate-gray"] .note-card[data-theme="minimal-white"] {
   border-radius: 50%;
   object-fit: cover;
   background-color: var(--primary);
-  display: none; /* Hidden by default until loaded */
+  display: none;
+  /* Hidden by default until loaded */
 }
 
 .header-avatar.visible {
@@ -1556,6 +1782,40 @@ body[data-theme="corporate-gray"] .note-card[data-theme="minimal-white"] {
   background: var(--surface-2);
   padding: var(--spacing-lg);
   border-radius: var(--radius);
+}
+
+/* Main Editor Body Area */
+.editor-body {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg);
+  overflow: hidden;
+}
+
+.editor-content {
+  flex: 1;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  font-size: 15px;
+  color: var(--text);
+  overflow-y: auto;
+  /* Ensure scrolling */
+  min-height: 0;
+  /* Crucial for nested flex scrolling */
+
+  /* Curve border around the typing area */
+  border: 2px solid color-mix(in srgb, var(--primary) 30%, var(--border));
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  background: var(--surface);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.editor-content:focus {
+  border-color: var(--primary);
 }
 
 .stat-card {
