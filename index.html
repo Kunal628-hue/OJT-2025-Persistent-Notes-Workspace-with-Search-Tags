@@ -4,11 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Global Notes Workspace</title>
+  <title>Global Notes v2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="CSS/index.css?v=4" />
+  <link rel="stylesheet" href="CSS/index.css?v=6" />
+  <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
@@ -155,24 +156,51 @@
         </div>
       </div>
 
-      <!-- AI Assistant Widget (Separate Box) -->
-      <div class="ai-sidebar-widget">
-        <div class="ai-widget-header">
-          <h3>✨ AI Assistant</h3>
+      <!-- Sidebar Widgets Container -->
+      <div class="sidebar-widgets-container">
+
+        <!-- AI Assistant Widget -->
+        <div class="ai-sidebar-widget">
+          <div class="ai-widget-header">
+            <h3>✨ AI Assistant</h3>
+          </div>
+          <div class="ai-input-wrapper">
+            <textarea id="ai-sidebar-prompt" class="ai-widget-input" placeholder="Ask AI to write..."></textarea>
+            <button id="ai-mic-btn" class="ai-mic-btn" title="Speak to write">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+              </svg>
+            </button>
+          </div>
+          <button id="ai-sidebar-generate" class="btn primary full-width">Generate</button>
         </div>
-        <div class="ai-input-wrapper">
-          <textarea id="ai-sidebar-prompt" class="ai-widget-input" placeholder="Ask AI to write..."></textarea>
-          <button id="ai-mic-btn" class="ai-mic-btn" title="Speak to write">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-              <line x1="12" y1="19" x2="12" y2="23"></line>
-              <line x1="8" y1="23" x2="16" y2="23"></line>
-            </svg>
-          </button>
+
+        <!-- Mail Widget -->
+        <div class="ai-sidebar-widget">
+          <div class="ai-widget-header">
+            <h3>✉️ Mailing</h3>
+          </div>
+          <div class="ai-input-wrapper" style="margin-bottom: 8px;">
+            <input type="email" id="sidebar-mail-sender" class="ai-widget-input" placeholder="Your Email"
+              style="height: 36px;">
+          </div>
+          <div class="ai-input-wrapper" style="margin-bottom: 8px;">
+            <input type="email" id="sidebar-mail-recipient" class="ai-widget-input" placeholder="Recipient's Email"
+              style="height: 36px;">
+          </div>
+          <div class="ai-input-wrapper">
+            <textarea id="sidebar-mail-prompt" class="ai-widget-input" placeholder="Describe the mail you want to write..."></textarea>
+          </div>
+          <button id="sidebar-mail-send" class="btn primary full-width" style="margin-top: 8px;">Done</button>
         </div>
-        <button id="ai-sidebar-generate" class="btn primary full-width">Generate</button>
+
+        <div style="text-align: center; font-size: 11px; color: var(--text-muted); padding-top: 10px;">
+          v2.0 (Updated)
+        </div>
       </div>
     </aside>
 
@@ -257,11 +285,7 @@
               </select>
             </div>
 
-            <div class="toolbar-group">
-              <button id="ai-summarize-btn" class="btn tiny primary" title="Summarize Note">
-                ✨ Summarize
-              </button>
-            </div>
+
 
             <div class="toolbar-group">
               <label for="editor-pattern" class="text-size-label">Background:</label>
@@ -413,7 +437,16 @@
 
 
 
+
+
   <script type="module" src="JS/notesApp.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log('Service Worker Registered'))
+        .catch((err) => console.log('SW Registration Failed', err));
+    }
+  </script>
 </body>
 
 </html>

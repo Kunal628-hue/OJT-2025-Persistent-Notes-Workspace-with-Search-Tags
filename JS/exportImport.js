@@ -171,7 +171,12 @@ export function wireImportExport(state) { // Accepts state object now
         modal.close();
       };
       document.getElementById("export-pdf").onclick = () => {
-        exportNotes(state.notes, 'pdf');
+        const activeNote = state.notes.find(n => n.id === state.activeNoteId);
+        if (activeNote) {
+          exportNotes([activeNote], 'pdf');
+        } else {
+          alert("No note open to print.");
+        }
         modal.close();
       };
     }

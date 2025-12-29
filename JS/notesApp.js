@@ -8,12 +8,14 @@ import { wireFormattingToolbar } from "./formattingToolbar.js";
 import { wireUploadButtons } from "./mediaManager.js";
 import { wireAuthButtons } from "./authButtons.js";
 import { wireImportExport } from "./exportImport.js";
-import { wireAIAssistant, wireSummarizeButton } from './aiAssistant.js';
+import { wireAIAssistant } from './aiAssistant.js';
 import { wireThemeToggle } from "./themeManager.js";
 import { getActiveFilter, getSelectedDate } from "./filterSearchSort.js";
 import { wireSidebarToggle, wireToolbarToggle } from "./layoutManager.js";
 import { initSmartCalendar } from "./smartCalendar.js";
 import { wireProfileManager, updateHeaderAvatar } from "./profileManager.js";
+import { wireSlashCommands } from "./slashCommands.js";
+import { wireMailFeature } from "./mailFeature.js";
 
 
 // Global state
@@ -101,13 +103,15 @@ async function initApp() {
   wireAuthButtons(state, callbacks);
   wireImportExport(state);
   wireAIAssistant();
-  wireSummarizeButton();
+
   wireThemeToggle();
   wireThemeSelector(state, callbacks);
   wireEditorPatternSelector(state, callbacks);
   wireSidebarToggle();
   wireToolbarToggle();
   wireProfileManager(state, callbacks);
+  wireSlashCommands();
+  wireMailFeature();
 
   // Initialize Smart Calendar
   state.calendarWidget = initSmartCalendar(state, callbacks);
