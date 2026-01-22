@@ -6,58 +6,11 @@ export function wireAIAssistant(state, callbacks) {
     const promptInput = document.getElementById("ai-sidebar-prompt");
     const contentEditor = document.getElementById("content");
 
-    const micBtn = document.getElementById("ai-mic-btn");
+
 
     if (!generateBtn || !promptInput) return;
 
-    // --- Voice Input Logic ---
-    if (micBtn) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-        if (SpeechRecognition) {
-            const recognition = new SpeechRecognition();
-            recognition.continuous = false;
-            recognition.lang = 'en-US';
-            recognition.interimResults = false;
-
-            micBtn.addEventListener("click", () => {
-                if (micBtn.classList.contains("listening")) {
-                    recognition.stop();
-                } else {
-                    recognition.start();
-                }
-            });
-
-            recognition.onstart = () => {
-                micBtn.classList.add("listening");
-                promptInput.placeholder = "Listening...";
-            };
-
-            recognition.onend = () => {
-                micBtn.classList.remove("listening");
-                promptInput.placeholder = "Ask AI to write...";
-            };
-
-            recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                // Append text ensuring a space if needed
-                const currentText = promptInput.value;
-                promptInput.value = currentText + (currentText.length > 0 && !currentText.endsWith(' ') ? ' ' : '') + transcript;
-            };
-
-            recognition.onerror = (event) => {
-                console.error("Speech recognition error", event.error);
-                micBtn.classList.remove("listening");
-                promptInput.placeholder = "Error. Try typing.";
-                setTimeout(() => {
-                    promptInput.placeholder = "Ask AI to write...";
-                }, 2000);
-            };
-        } else {
-            console.warn("Speech Recognition API not supported in this browser.");
-            micBtn.style.display = "none"; // Hide if not supported
-        }
-    }
 
     // --- Generate Logic ---
     generateBtn.addEventListener("click", async () => {
@@ -93,13 +46,13 @@ export function wireAIAssistant(state, callbacks) {
 
         // A single newline should be a line break, more should be paragraphs.
         const paragraphs = text.split('\n').filter(p => p.trim() !== '');
-        
+
         // Using execCommand for broader compatibility, with a fallback.
         try {
             if (paragraphs.length <= 1) {
-                 document.execCommand('insertText', false, text);
+                document.execCommand('insertText', false, text);
             } else {
-                 document.execCommand('insertHTML', false, paragraphs.join('<br>'));
+                document.execCommand('insertHTML', false, paragraphs.join('<br>'));
             }
         } catch (e) {
             console.warn("execCommand is not supported. Falling back to range manipulation.");
@@ -108,7 +61,7 @@ export function wireAIAssistant(state, callbacks) {
 
             const range = selection.getRangeAt(0);
             range.deleteContents();
-            
+
             const fragment = document.createDocumentFragment();
             paragraphs.forEach((p, index) => {
                 fragment.appendChild(document.createTextNode(p));

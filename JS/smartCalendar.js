@@ -5,6 +5,24 @@ export function initSmartCalendar(state, callbacks) {
     const popup = document.querySelector("#smart-calendar");
     const dateInput = document.querySelector("#date-filter");
 
+    // Update Dynamic Icon & Real-time Date
+    const iconMonth = document.querySelector("#cal-icon-month");
+    const iconDay = document.querySelector("#cal-icon-day");
+    const realTimeDateDisplay = document.querySelector("#real-time-date-display");
+
+    const today = new Date();
+    
+    if (iconMonth && iconDay) {
+        const monthsShort = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        iconMonth.textContent = monthsShort[today.getMonth()];
+        iconDay.textContent = String(today.getDate()).padStart(2, '0');
+    }
+
+    if (realTimeDateDisplay) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        realTimeDateDisplay.textContent = today.toLocaleDateString('en-US', options);
+    }
+
     if (!toggleBtn || !popup) return;
 
     let currentYear = new Date().getFullYear();

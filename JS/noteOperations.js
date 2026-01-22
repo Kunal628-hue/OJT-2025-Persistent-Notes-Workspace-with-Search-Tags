@@ -39,6 +39,15 @@ export function removeTagFromActiveNote(notes, activeNoteId, tag, activeUser, ca
 
 // Saves the current state of the active note including title, content, and tags
 export function handleSaveNote(notes, activeNoteId, activeUser, getActiveFilter, callbacks) {
+  // Check if user is logged in
+  if (!activeUser) {
+    const shouldLogin = confirm("You need to be logged in to save notes. Would you like to log in now?");
+    if (shouldLogin) {
+      window.location.href = "./HTML/signup.html";
+    }
+    return;
+  }
+
   const note = notes.find((n) => n.id === activeNoteId);
   if (!note) return;
   const titleInput = $("#title");

@@ -53,13 +53,18 @@
         <label for="date-filter" class="date-filter-label">Date</label>
         <div class="date-input-wrapper">
           <input type="date" id="date-filter" class="date-filter-input" aria-label="Select note date" />
-          <button class="btn-icon" id="calendar-toggle" aria-label="Toggle calendar">📅</button>
+          <button class="calendar-icon-btn" id="calendar-toggle" aria-label="Toggle calendar">
+            <div class="cal-icon-header" id="cal-icon-month">JAN</div>
+            <div class="cal-icon-body" id="cal-icon-day">01</div>
+          </button>
         </div>
         <button class="btn tiny ghost" type="button" id="clear-date" aria-label="Clear date filter">
           Clear
         </button>
         <!-- Custom Calendar Popup -->
         <div class="smart-calendar-popup hidden" id="smart-calendar">
+          <div class="real-time-date-display" id="real-time-date-display"></div>
+
           <div class="calendar-header">
             <button class="cal-nav-btn" id="cal-prev">←</button>
             <span class="cal-current-month" id="cal-month-year">December 2025</span>
@@ -167,15 +172,7 @@
           </div>
           <div class="ai-input-wrapper">
             <textarea id="ai-sidebar-prompt" class="ai-widget-input" placeholder="Ask AI to write..."></textarea>
-            <button id="ai-mic-btn" class="ai-mic-btn" title="Speak to write">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                <line x1="12" y1="19" x2="12" y2="23"></line>
-                <line x1="8" y1="23" x2="16" y2="23"></line>
-              </svg>
-            </button>
+
           </div>
           <button id="ai-sidebar-generate" class="btn primary full-width">Generate</button>
         </div>
