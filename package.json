@@ -5,7 +5,8 @@
   "main": "sw.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "vercel-build": "echo 'No build step'"
+    "vercel-build": "node generate-config.js",
+    "build": "node generate-config.js"
   },
   "keywords": [],
   "author": "",

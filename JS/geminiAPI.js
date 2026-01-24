@@ -1,9 +1,10 @@
+import config from './config.js';
 
 // PLEASE NOTE: This is a sample implementation. You will need to secure your API key.
 // Do not expose it in client-side code in a production environment.
 // Consider using a backend proxy or a serverless function to handle API calls securely.
 
-const API_KEY = 'AIzaSyCqXDZVyFZh0u2ZYCL4MrvPlsL8YNqNw70'; // <-- IMPORTANT: Replace with your API key
+const { GEMINI_API_KEY: API_KEY } = config; // <-- IMPORTANT: Replace with your API key
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemma-3-4b-it:generateContent?key=${API_KEY}`;
 
 /**
@@ -42,7 +43,7 @@ You can get a key from Google AI Studio.
         }
 
         const data = await response.json();
-        
+
         if (data.candidates && data.candidates.length > 0 && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts.length > 0) {
             return data.candidates[0].content.parts[0].text;
         } else {
