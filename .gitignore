@@ -2,3 +2,5 @@
 .env*.local
 .env
 JS/config.js
+node_modules
+dist
