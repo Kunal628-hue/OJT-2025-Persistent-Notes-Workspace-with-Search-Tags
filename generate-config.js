@@ -22,7 +22,11 @@ const configContent = `const config = {
 export default config;
 `;
 
-const configPath = path.join(__dirname, 'JS', 'config.js');
+const jsDir = path.join(__dirname, 'JS');
+if (!fs.existsSync(jsDir)) {
+    fs.mkdirSync(jsDir, { recursive: true });
+}
+const configPath = path.join(jsDir, 'config.js');
 
 try {
     fs.writeFileSync(configPath, configContent);
