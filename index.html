@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="CSS/index.css?v=13" />
+  <link rel="stylesheet" href="CSS/index.css?v=2.3" />
   <link rel="stylesheet" href="CSS/tagManager.css" />
   <link rel="manifest" href="/manifest.json">
   <script>
@@ -86,10 +86,7 @@
       <div class="ad-placeholder" style="flex: 1; height: 40px;"></div>
 
       <div class="header-tools">
-        <button class="btn tiny ghost" id="edit-undo" type="button" aria-label="Undo"><span
-            aria-hidden="true">↺</span></button>
-        <button class="btn tiny ghost" id="edit-redo" type="button" aria-label="Redo"><span
-            aria-hidden="true">↻</span></button>
+
 
         <select id="theme-selector" class="select tiny" aria-label="UI Theme">
           <option value="amoled-dark">AMOLED Dark</option>
@@ -258,6 +255,12 @@
       <div class="editor-body">
         <div class="editor-toolbar" aria-label="Text formatting controls">
           <div class="toolbar-controls">
+            <div class="toolbar-group">
+              <button class="btn tiny ghost" id="edit-undo" type="button" aria-label="Undo" title="Undo"><span
+                  aria-hidden="true">↺</span></button>
+              <button class="btn tiny ghost" id="edit-redo" type="button" aria-label="Redo" title="Redo"><span
+                  aria-hidden="true">↻</span></button>
+            </div>
             <div class="toolbar-group">
               <label for="text-size" class="text-size-label">Size:</label>
               <select id="text-size" class="select tiny" aria-label="Text size">
@@ -616,7 +619,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script type="text/javascript" src="JS/vendor/lz-string.min.js"></script>
   <script type="text/javascript" src="JS/vendor/qrcode.min.js"></script>
-  <script type="module" src="JS/notesApp.js?v=2.2"></script>
+  <script type="module" src="JS/notesApp.js?v=2.3"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js')

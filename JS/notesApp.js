@@ -85,6 +85,9 @@ const callbacks = {
 
 // Initializes the application by setting up state, loading data, and wiring up event handlers
 async function initApp() {
+  // Apply theme immediately to prevent flickering or failures if auth hangs
+  wireThemeToggle();
+
   // Load user session
   // Check Supabase session first (especially after OAuth redirect)
   const session = await getSession();
@@ -129,7 +132,8 @@ async function initApp() {
   wireImportExport(state);
   wireAIAssistant(state, callbacks);
 
-  wireThemeToggle();
+
+
   wireThemeSelector(state, callbacks);
   wireEditorPatternSelector(state, callbacks);
   wireSidebarToggle();

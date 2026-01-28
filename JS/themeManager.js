@@ -16,9 +16,9 @@ export function getStoredTheme() {
 // Applies the specified theme to the UI by updating the data-theme attribute
 export function applyTheme(theme) {
   const normalized = VALID_THEMES.includes(theme) ? theme : DEFAULT_THEME;
-  const bodyEl = document.body;
-  if (bodyEl) {
-    bodyEl.dataset.theme = normalized;
+  const root = document.documentElement;
+  if (root) {
+    root.dataset.theme = normalized;
   }
 
   // Let CSS variables drive colors; clear any previous inline overrides

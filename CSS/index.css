@@ -7,7 +7,7 @@
 
 /* Theme: AMOLED Dark (Default) */
 :root,
-body[data-theme="amoled-dark"] {
+html[data-theme="amoled-dark"] {
   --bg: #050505;
   --surface: #0f0f10;
   --surface-2: #18181b;
@@ -39,7 +39,7 @@ body[data-theme="amoled-dark"] {
 }
 
 /* Theme: Professional Light */
-body[data-theme="professional-light"] {
+html[data-theme="professional-light"] {
   --bg: #f8fafc;
   --surface: #ffffff;
   --surface-2: #f0fdf4;
@@ -70,7 +70,7 @@ body[data-theme="professional-light"] {
 }
 
 /* Theme: Corporate Gray */
-body[data-theme="corporate-gray"] {
+html[data-theme="corporate-gray"] {
   --bg: #18181b;
   --surface: #27272a;
   --surface-2: #3f3f46;
@@ -101,7 +101,7 @@ body[data-theme="corporate-gray"] {
 }
 
 /* Theme: Minimal White */
-body[data-theme="minimal-white"] {
+html[data-theme="minimal-white"] {
   --bg: #ffffff;
   --surface: #fafafa;
   --surface-2: #f5f5f5;
@@ -132,16 +132,20 @@ body[data-theme="minimal-white"] {
 }
 
 
-html,
-body {
+html {
   height: 100%;
+  font-size: 14px;
   background: var(--bg-gradient);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  height: 100%;
+  margin: 0;
 }
 
 body {
@@ -1914,6 +1918,10 @@ body[data-theme="corporate-gray"] .note-card[data-theme="minimal-white"] {
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent !important;
 }
 
 ::-webkit-scrollbar-track {
