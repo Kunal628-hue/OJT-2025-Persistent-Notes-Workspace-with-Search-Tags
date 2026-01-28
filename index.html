@@ -31,6 +31,34 @@
       <div class="search">
         <input type="search" id="search" class="search-input" placeholder="Search notes by title, text, or tags…"
           aria-label="Search notes" />
+
+        <!-- Moved Calendar -->
+        <div class="date-filter smart-calendar-container" id="search-date-filter">
+          <div class="date-input-wrapper">
+            <input type="date" id="date-filter" class="date-filter-input" aria-label="Select note date" />
+            <button class="calendar-icon-btn" id="calendar-toggle" aria-label="Toggle calendar">
+              <div class="cal-icon-header" id="cal-icon-month">JAN</div>
+              <div class="cal-icon-body" id="cal-icon-day">01</div>
+            </button>
+          </div>
+          <!-- Custom Calendar Popup -->
+          <div class="smart-calendar-popup hidden" id="smart-calendar">
+            <div class="real-time-date-display" id="real-time-date-display"></div>
+
+            <div class="calendar-header">
+              <button class="cal-nav-btn" id="cal-prev">←</button>
+              <span class="cal-current-month" id="cal-month-year">December 2025</span>
+              <button class="cal-nav-btn" id="cal-next">→</button>
+            </div>
+            <div class="calendar-grid" id="calendar-grid">
+              <!-- Days will be injected here -->
+            </div>
+            <div class="calendar-footer">
+              <button class="btn tiny ghost" id="cal-today">Today</button>
+              <button class="btn tiny ghost" id="clear-date" style="margin-left: auto;">Clear</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="auth-controls">
@@ -54,35 +82,8 @@
         <button class="chip" data-filter="todo">To‑do</button>
       </div>
 
-      <div class="date-filter smart-calendar-container">
-        <label for="date-filter" class="date-filter-label">Date</label>
-        <div class="date-input-wrapper">
-          <input type="date" id="date-filter" class="date-filter-input" aria-label="Select note date" />
-          <button class="calendar-icon-btn" id="calendar-toggle" aria-label="Toggle calendar">
-            <div class="cal-icon-header" id="cal-icon-month">JAN</div>
-            <div class="cal-icon-body" id="cal-icon-day">01</div>
-          </button>
-        </div>
-        <button class="btn tiny ghost" type="button" id="clear-date" aria-label="Clear date filter">
-          Clear
-        </button>
-        <!-- Custom Calendar Popup -->
-        <div class="smart-calendar-popup hidden" id="smart-calendar">
-          <div class="real-time-date-display" id="real-time-date-display"></div>
-
-          <div class="calendar-header">
-            <button class="cal-nav-btn" id="cal-prev">←</button>
-            <span class="cal-current-month" id="cal-month-year">December 2025</span>
-            <button class="cal-nav-btn" id="cal-next">→</button>
-          </div>
-          <div class="calendar-grid" id="calendar-grid">
-            <!-- Days will be injected here -->
-          </div>
-          <div class="calendar-footer">
-            <button class="btn tiny ghost" id="cal-today">Today</button>
-          </div>
-        </div>
-      </div>
+      <!-- Ad Placeholder (Empty Space) -->
+      <div class="ad-placeholder" style="flex: 1; height: 40px;"></div>
 
       <div class="header-tools">
         <button class="btn tiny ghost" id="edit-undo" type="button" aria-label="Undo"><span
@@ -208,6 +209,7 @@
         </div>
 
       </div>
+      <div class="sidebar-resizer" id="sidebar-resizer"></div>
     </aside>
 
     <!-- Editor: note details -->

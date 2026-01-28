@@ -10,7 +10,7 @@ import { wireImportExport } from "./exportImport.js";
 import { wireAIAssistant } from './aiAssistant.js';
 import { wireThemeToggle } from "./themeManager.js";
 import { getActiveFilter, getSelectedDate } from "./filterSearchSort.js";
-import { wireSidebarToggle, wireToolbarToggle } from "./layoutManager.js";
+import { wireSidebarToggle, wireToolbarToggle, wireSidebarResize } from "./layoutManager.js";
 import { initSmartCalendar } from "./smartCalendar.js";
 import { wireProfileManager, updateHeaderAvatar } from "./profileManager.js";
 import { wireSlashCommands } from "./slashCommands.js";
@@ -95,14 +95,22 @@ async function initApp() {
     state.activeUser = username;
 
     // Merge any Guest notes that might exist locally
-    mergeGuestNotes(username);
+    const didMerge = mergeGuestNotes(username);
+
+    // Load notes for current user
+    await callbacks.loadNotesForCurrentUser();
+
+    // If we successfully merged guest notes, sync them to cloud immediately
+    if (didMerge) {
+      console.log("Syncing merged guest notes to cloud...");
+      await callbacks.persistNotes();
+    }
   } else {
     // Fallback to local storage (e.g. if offline or guest)
     state.activeUser = getActiveUser();
+    // Load notes for current user (guest)
+    await callbacks.loadNotesForCurrentUser();
   }
-
-  // Load notes for current user
-  await callbacks.loadNotesForCurrentUser();
 
   // Set initial active note
   if (state.notes.length && !state.activeNoteId) {
@@ -126,6 +134,7 @@ async function initApp() {
   wireEditorPatternSelector(state, callbacks);
   wireSidebarToggle();
   wireToolbarToggle();
+  wireSidebarResize();
   wireProfileManager(state, callbacks);
   wireSlashCommands();
   wireMailFeature();

@@ -17,12 +17,13 @@ export async function getNotes(user) {
     const currentUser = session?.data?.session?.user;
 
     // 1. Try fetching from Supabase if authenticated
+    let cloudNotes = [];
     if (currentUser && user !== 'guest') {
       try {
         console.log("Fetching notes from Supabase...");
         const dbNotes = await db.fetchNotes();
         // Map DB (snake_case) to App (camelCase)
-        const cloudNotes = dbNotes.map(n => ({
+        cloudNotes = dbNotes.map(n => ({
           id: n.id,
           title: n.title,
           content: n.content,
@@ -33,29 +34,52 @@ export async function getNotes(user) {
           createdAt: n.created_at,
           updatedAt: n.updated_at
         }));
-
-        if (cloudNotes.length > 0) {
-          finalNotes = cloudNotes;
-        }
       } catch (err) {
-        console.error("Supabase fetch failed, falling back to local:", err);
+        console.error("Supabase fetch failed", err);
       }
     }
 
-    // 2. If Cloud was empty or failed, check LocalStorage
-    // This handles cases where:
-    // a) User was offline/unauthenticated previously and saved locally
-    // b) Cloud is empty but Local has data (orphaned notes)
-    if (finalNotes.length === 0) {
-      const raw = localStorage.getItem(storageKeyForUser(user));
-      if (raw) {
+    // 2. Fetch from LocalStorage
+    let localNotes = [];
+    const raw = localStorage.getItem(storageKeyForUser(user));
+    if (raw) {
+      try {
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          console.log("Using LocalStorage notes (Cloud was empty/unavailable)");
-          finalNotes = parsed;
+        if (Array.isArray(parsed)) {
+          localNotes = parsed;
         }
+      } catch (e) {
+        console.error("Error parsing local notes", e);
       }
     }
+
+    // 3. Merge Cloud and Local (Union by ID, preferring Cloud for content if timestamps equal? Or just union)
+    // Simple Merge: Map by ID. If same ID exists in both, prefer Cloud (assuming it's synced) 
+    // BUT we want to ensure NEW local items (guest merge) are included.
+    // If a note exists in Local but NOT Cloud, include it.
+    // If a note exists in BOTH, use Cloud (assuming Sync manages conflicts)
+    // Actually, if we just merged guest notes, they are in Local. They might not be in Cloud yet.
+    // So if Local has a note that Cloud doesn't, we MUST include it.
+
+    const notesMap = new Map();
+
+    // First add Cloud notes
+    cloudNotes.forEach(n => notesMap.set(n.id, n));
+
+    // Then add Local notes if they don't exist in map OR if we want to support offline edits
+    // For now, let's just add missing local notes to the list
+    localNotes.forEach(n => {
+      if (!notesMap.has(n.id)) {
+        notesMap.set(n.id, n);
+      }
+      // Optional: Conflict resolution if timestamps differ? 
+      // For this specific bug (Guest Merge), the ID (timestamp usually) won't collide with old Cloud notes.
+    });
+
+    finalNotes = Array.from(notesMap.values());
+
+    // Sort by updated descending
+    finalNotes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
   } catch (e) {
     console.error("Error getting notes:", e);
@@ -63,6 +87,8 @@ export async function getNotes(user) {
 
   return finalNotes;
 }
+
+
 
 /**
  * Saves notes.
@@ -221,8 +247,10 @@ export function mergeGuestNotes(username) {
     localStorage.removeItem(guestKey);
 
     console.log(`Merged ${guestNotes.length} guest notes into user ${username}`);
+    return true;
   } catch (err) {
     console.error("Failed to merge guest notes", err);
+    return false;
   }
 }
 

@@ -196,6 +196,20 @@ body {
   min-width: 240px;
   margin: 0 auto;
   /* Center in available space */
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding-right: 4px;
+  transition: all 200ms ease;
+}
+
+.search:focus-within {
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 10%, transparent);
 }
 
 .header-toolbar {
@@ -236,8 +250,8 @@ body {
   height: 40px;
   padding: 0 var(--spacing-md) 0 40px;
   border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--surface-2);
+  border: none;
+  background: transparent;
   color: var(--text);
   font-size: 14px;
   transition: all 200ms ease;
@@ -247,10 +261,13 @@ body {
 }
 
 .search-input:focus {
-  border-color: var(--primary);
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+  /* border-color: var(--primary);
   background: var(--surface);
   outline: none;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 10%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 10%, transparent); */
 }
 
 .search-input::placeholder {
@@ -268,18 +285,32 @@ body {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: 4px var(--spacing-md);
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
   transition: all 200ms ease;
-  height: 40px;
+  height: auto;
+  position: static;
+  /* Let the popup position relative to container or handle specially */
 }
 
+/* Fix popup positioning since parent is different */
+.smart-calendar-container {
+  position: relative;
+}
+
+.smart-calendar-popup {
+  top: 100%;
+  right: 0;
+  margin-top: 12px;
+}
+
+
 .date-filter:focus-within {
-  background: var(--surface);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 10%, transparent);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .date-filter-label {
@@ -574,12 +605,13 @@ body {
 /* ===== Layout ===== */
 .layout {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: var(--sidebar-width, 260px) 1fr;
   gap: var(--spacing-lg);
   padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
   max-width: 1800px;
   margin: 0 auto;
-  transition: all 300ms ease;
+  transition: grid-template-columns 0s;
+  /* Disable transition for immediate resizing */
 }
 
 /* Hidden sidebar state */
@@ -605,10 +637,43 @@ body {
   height: calc(100vh - 85px);
   overflow-y: auto;
   min-height: 0;
+  gap: var(--spacing-lg);
+  height: calc(100vh - 85px);
+  overflow-y: auto;
+  min-height: 0;
   padding-right: var(--spacing-xs);
+  position: relative;
 }
 
-.sidebar-column::-webkit-scrollbar {
+.sidebar-resizer {
+  position: absolute;
+  top: 0;
+  right: -8px;
+  /* Adjust based on gap */
+  width: 16px;
+  /* Hit area */
+  height: 100%;
+  cursor: col-resize;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  transition: background-color 0.2ms;
+}
+
+.sidebar-resizer::after {
+  content: "";
+  width: 2px;
+  height: 100%;
+  background-color: transparent;
+  transition: background-color 0.2ms;
+}
+
+.sidebar-resizer:hover::after,
+.sidebar-resizer.resizing::after {
+  background-color: var(--primary);
+}
+
+/* .sidebar-column::-webkit-scrollbar {
   width: 6px;
 }
 
@@ -623,7 +688,7 @@ body {
 
 .sidebar-column::-webkit-scrollbar-thumb:hover {
   background: var(--border-light);
-}
+} */
 
 .sidebar {
   border: 1px solid color-mix(in srgb, var(--primary) 20%, var(--border));
@@ -1845,22 +1910,38 @@ body[data-theme="corporate-gray"] .note-card[data-theme="minimal-white"] {
 }
 
 /* ===== Scrollbar styling ===== */
+/* ===== Scrollbar styling ===== */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--surface);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-light);
-  border-radius: 4px;
+  background-color: transparent;
+  /* Hidden by default */
+  border-radius: 99px;
+  background-clip: content-box;
+  transition: background-color 0.2ms;
 }
 
+/* Show thumb on hover of scrollable areas */
+body:hover::-webkit-scrollbar-thumb,
+.sidebar-column:hover::-webkit-scrollbar-thumb,
+.notes-list:hover::-webkit-scrollbar-thumb,
+.editor-content:hover::-webkit-scrollbar-thumb,
+.folder-list:hover::-webkit-scrollbar-thumb,
+.slash-menu:hover::-webkit-scrollbar-thumb,
+textarea:hover::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--text-muted) 30%, transparent);
+}
+
+/* Darker on direct hover of the scrollbar itself */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background-color: color-mix(in srgb, var(--text-muted) 60%, transparent) !important;
 }
 
 /* ===== Responsive ===== */
