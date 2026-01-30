@@ -166,6 +166,7 @@ export function wireThemeSelector(state, callbacks) {
       note.updatedAt = new Date().toISOString();
       callbacks.persistNotes();
       callbacks.renderNotesList();
+      callbacks.renderActiveNote();
     }
   });
 }

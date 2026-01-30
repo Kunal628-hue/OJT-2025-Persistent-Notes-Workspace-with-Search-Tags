@@ -89,6 +89,7 @@ export function renderActiveNote(note, removeTagFromActiveNote) {
   const titleInput = $("#title");
   const contentInput = $("#content");
   const tagsContainer = $("#tags");
+  const editorSection = $(".editor");
 
   if (!note) {
     if (titleInput) titleInput.value = "";
@@ -97,6 +98,7 @@ export function renderActiveNote(note, removeTagFromActiveNote) {
       contentInput.removeAttribute("data-pattern");
     }
     if (tagsContainer) tagsContainer.innerHTML = "";
+    if (editorSection) editorSection.removeAttribute("data-theme");
     return;
   }
 
@@ -105,6 +107,15 @@ export function renderActiveNote(note, removeTagFromActiveNote) {
     contentInput.innerHTML = note.content || "";
     // Apply editor pattern
     contentInput.setAttribute("data-pattern", note.editorPattern || "plain");
+  }
+
+  // Apply editor theme
+  if (editorSection) {
+    if (note.theme) {
+      editorSection.setAttribute("data-theme", note.theme);
+    } else {
+      editorSection.removeAttribute("data-theme");
+    }
   }
 
   if (tagsContainer) {
